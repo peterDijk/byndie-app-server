@@ -1,6 +1,9 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { Location } from '../location/location.model';
 import config from '../../config';
+import { LocationInput } from '../location/location.dto';
+import { Optional } from '@nestjs/common';
 
 @ObjectType()
 export class UserDto {
@@ -29,6 +32,19 @@ export class CreateUserDto {
   @IsString()
   @MinLength(config.MIN_PW_LENGTH)
   password: string;
+
+  @Field()
+  @Optional()
+  @IsEmail()
+  firstName?: string;
+
+  @Field()
+  @Optional()
+  @IsEmail()
+  lastName?: string;
+
+  @Field((type) => LocationInput)
+  location?: Location;
 }
 
 @InputType()

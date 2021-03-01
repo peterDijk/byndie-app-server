@@ -4,12 +4,14 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BeforeInsert,
+  OneToOne,
 } from 'typeorm';
 import { IsString, MinLength, IsEmail } from 'class-validator';
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 import config from '../../config';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Location } from '../location/location.model';
 
 @ObjectType()
 @Entity()
@@ -41,6 +43,24 @@ export class User extends BaseEntity {
     nullable: false,
   })
   password: string;
+
+  @Field()
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  firstName: string;
+
+  @Field()
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  lastName: string;
+
+  @Field((type) => Location, { name: 'UserLocation' })
+  @OneToOne((type) => Location)
+  userLocation: Location;
 
   @BeforeInsert() async hashPassword() {
     try {

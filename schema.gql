@@ -2,10 +2,29 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Country {
+  id: String!
+  name: String!
+  CountryCities: [City!]!
+}
+
+type City {
+  id: String!
+  name: String!
+  CityCountry: Country!
+}
+
 type UserDto {
   id: String!
   username: String!
   email: String!
+}
+
+type Location {
+  id: String!
+  LocationCity: City!
+  LocationCountry: Country!
+  LocationUsers: [UserDto!]!
 }
 
 type HealthCheck {
@@ -54,6 +73,22 @@ input CreateUserDto {
   username: String!
   email: String!
   password: String!
+  firstName: String!
+  lastName: String!
+  location: LocationInput!
+}
+
+input LocationInput {
+  country: CountryInput!
+  city: CityInput!
+}
+
+input CountryInput {
+  name: String!
+}
+
+input CityInput {
+  name: String!
 }
 
 input LoginUserDto {
