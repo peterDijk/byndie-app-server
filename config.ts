@@ -37,7 +37,7 @@ const configs = {
   developtment: {},
   production: {
     PORT: process.env.PORT || 7000,
-    MIN_PW_LENGTH: 8,
+    MIN_PW_LENGTH: process.env.MIN_PW_LENGTH || 8,
   },
 };
 

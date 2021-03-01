@@ -2,9 +2,15 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 import config from '../../config';
 
-export interface UserDto {
+@ObjectType()
+export class UserDto {
+  @Field()
   id: string;
+
+  @Field()
   username: string;
+
+  @Field()
   email: string;
 }
 
@@ -25,10 +31,13 @@ export class CreateUserDto {
   password: string;
 }
 
+@InputType()
 export class LoginUserDto {
+  @Field()
   @IsString()
   username: string;
 
+  @Field()
   @IsString()
   password: string;
 }

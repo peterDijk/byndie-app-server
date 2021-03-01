@@ -2,18 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+type UserDto {
   id: String!
   username: String!
   email: String!
-  password: String!
 }
 
 type HealthCheck {
   id: Float!
   message: String!
   dateCreated: DateTime!
-  user: User!
+  user: UserDto!
 }
 
 """
@@ -31,22 +30,33 @@ type HealthCheckResponse {
 }
 
 type Query {
+  """Simple healthcheck to test response of the server"""
   healthcheck: HealthCheckResponse!
 
-  """Authorized"""
+  """Authorized - list all stored healthchecks"""
   allHealthChecks: [HealthCheck!]!
 }
 
 type Mutation {
-  register(userData: CreateUserDto!): User!
-  login(password: String!, username: String!): LoginStatus!
+  """register a new user"""
+  register(input: CreateUserDto!): UserDto!
 
-  """Authorized"""
+  """login to get a token"""
+  login(input: LoginUserDto!): LoginStatus!
+
+  """
+  Authorized - store a new healthcheck in the database (test for db storage
+  """
   addHealthCheck: HealthCheck!
 }
 
 input CreateUserDto {
   username: String!
   email: String!
+  password: String!
+}
+
+input LoginUserDto {
+  username: String!
   password: String!
 }
