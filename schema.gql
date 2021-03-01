@@ -2,28 +2,18 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Country {
-  id: String!
-  name: String!
-  CountryCities: [City!]!
-}
-
-type City {
-  id: String!
-  name: String!
-  CityCountry: Country!
-}
-
 type UserDto {
   id: String!
   username: String!
   email: String!
+  lastName: String!
+  firstName: String!
 }
 
 type Location {
   id: String!
-  LocationCity: City!
-  LocationCountry: Country!
+  country: String!
+  city: String!
   LocationUsers: [UserDto!]!
 }
 
@@ -46,6 +36,18 @@ type LoginStatus {
 
 type HealthCheckResponse {
   message: String!
+}
+
+type Country {
+  id: String!
+  name: String!
+  CountryCities: [City!]!
+}
+
+type City {
+  id: String!
+  name: String!
+  CityCountry: Country!
 }
 
 type Query {
@@ -79,16 +81,8 @@ input CreateUserDto {
 }
 
 input LocationInput {
-  country: CountryInput!
-  city: CityInput!
-}
-
-input CountryInput {
-  name: String!
-}
-
-input CityInput {
-  name: String!
+  country: String!
+  city: String!
 }
 
 input LoginUserDto {

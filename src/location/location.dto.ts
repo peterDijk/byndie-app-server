@@ -1,5 +1,5 @@
 import { Optional } from '@nestjs/common';
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 
 @InputType()
 export class CityInput {
@@ -13,13 +13,14 @@ export class CountryInput {
   name: string;
 }
 
+@ObjectType()
 @InputType()
 export class LocationInput {
   @Field()
   @Optional()
-  country: CountryInput;
+  country: string;
 
   @Field()
   @Optional()
-  city: CityInput;
+  city: string;
 }

@@ -5,6 +5,7 @@ import {
   OneToOne,
   OneToMany,
   Column,
+  ManyToOne,
 } from 'typeorm';
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { City } from './city.model';
@@ -20,27 +21,31 @@ export class Location extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  // @Column({
-  //   type: 'varchar',
-  //   nullable: true,
-  // })
-  // country: string;
+  @Field()
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  country: string;
 
-  // @Column({
-  //   type: 'varchar',
-  //   nullable: true,
-  // })
-  // city: string;
+  @Field()
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  city: string;
 
-  @Field((type) => City, { name: 'LocationCity' })
-  @OneToOne((type) => City)
-  locationCity: City;
+  // @Field((type) => City, { name: 'LocationCity' })
+  // @OneToOne((type) => City)
+  // locationCity: City;
 
-  @Field((type) => Country, { name: 'LocationCountry' })
-  @OneToOne((type) => Country)
-  locationCountry: Country;
+  // @Field((type) => Country, { name: 'LocationCountry' })
+  // @OneToOne((type) => Country)
+  // locationCountry: Country;
 
   @Field((type) => [UserDto], { name: 'LocationUsers' })
-  @OneToMany((type) => User, (user) => user.userLocation)
+  @OneToMany((type) => User, (user) => user.userLocation, {
+    cascade: ['insert', 'update'],
+  })
   users: User[];
 }

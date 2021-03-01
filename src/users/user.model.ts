@@ -5,6 +5,8 @@ import {
   Column,
   BeforeInsert,
   OneToOne,
+  OneToMany,
+  ManyToOne,
 } from 'typeorm';
 import { IsString, MinLength, IsEmail } from 'class-validator';
 import { Exclude } from 'class-transformer';
@@ -59,7 +61,7 @@ export class User extends BaseEntity {
   lastName: string;
 
   @Field((type) => Location, { name: 'UserLocation' })
-  @OneToOne((type) => Location)
+  @ManyToOne((type) => Location, (location) => location.users)
   userLocation: Location;
 
   @BeforeInsert() async hashPassword() {

@@ -15,6 +15,15 @@ export class UserDto {
 
   @Field()
   email: string;
+
+  @Field()
+  lastName: string;
+
+  @Field()
+  firstName: string;
+
+  // @Field((type) => LocationInput, { name: 'UserLocationInput' })
+  // userLocation: LocationInput;
 }
 
 @InputType()
@@ -35,12 +44,10 @@ export class CreateUserDto {
 
   @Field()
   @Optional()
-  @IsEmail()
   firstName?: string;
 
   @Field()
   @Optional()
-  @IsEmail()
   lastName?: string;
 
   @Field((type) => LocationInput)
