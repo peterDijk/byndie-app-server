@@ -15,21 +15,28 @@ export class HealthCheckResolver {
   ) {}
   private readonly logger = new Logger(HealthCheckResolver.name);
 
-  @Query((returns) => HealthCheckResponse)
+  @Query((returns) => HealthCheckResponse, {
+    description: 'Simple healthcheck to test response of the server',
+  })
   healthcheck(): HealthCheckResponse {
     return {
       message: 'ok',
     };
   }
 
-  @Query((returns) => [HealthCheck], { description: 'Authorized' })
+  @Query((returns) => [HealthCheck], {
+    description: 'Authorized - list all stored healthchecks',
+  })
   @UseGuards(GqlAuthGuard)
   async allHealthChecks(@CurrentUser() user: User): Promise<HealthCheck[]> {
     const healths = await this.healthService.findAll();
     return healths;
   }
 
-  @Mutation((returns) => HealthCheck, { description: 'Authorized' })
+  @Mutation((returns) => HealthCheck, {
+    description:
+      'Authorized - store a new healthcheck in the database (test for db storage',
+  })
   @UseGuards(GqlAuthGuard)
   async addHealthCheck(@CurrentUser() user: User): Promise<HealthCheck> {
     return await this.healthService.create(user);

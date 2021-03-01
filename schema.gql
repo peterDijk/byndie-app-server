@@ -30,17 +30,23 @@ type HealthCheckResponse {
 }
 
 type Query {
+  """Simple healthcheck to test response of the server"""
   healthcheck: HealthCheckResponse!
 
-  """Authorized"""
+  """Authorized - list all stored healthchecks"""
   allHealthChecks: [HealthCheck!]!
 }
 
 type Mutation {
+  """register a new user"""
   register(input: CreateUserDto!): UserDto!
+
+  """login to get a token"""
   login(input: LoginUserDto!): LoginStatus!
 
-  """Authorized"""
+  """
+  Authorized - store a new healthcheck in the database (test for db storage
+  """
   addHealthCheck: HealthCheck!
 }
 

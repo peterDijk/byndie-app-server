@@ -13,12 +13,12 @@ export class AuthResolver {
     @Inject(UsersService) private usersService: UsersService,
   ) {}
 
-  @Mutation((returns) => UserDto)
+  @Mutation((returns) => UserDto, { description: 'register a new user' })
   async register(@Args('input') userDto: CreateUserDto): Promise<User> {
     return await this.authService.register(userDto);
   }
 
-  @Mutation((returns) => LoginStatus)
+  @Mutation((returns) => LoginStatus, { description: 'login to get a token' })
   async login(@Args('input') { username, password }: LoginUserDto) {
     const result = await this.authService.login({ username, password });
     console.log({ result });
