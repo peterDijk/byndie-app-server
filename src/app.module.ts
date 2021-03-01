@@ -11,6 +11,8 @@ import { GraphQLModule } from '@nestjs/graphql';
     HealthModule,
     GraphQLModule.forRoot({
       autoSchemaFile: 'schema.gql',
+      introspection: process.env.GQL_PLAYGROUND === 'enabled' ? true : false,
+      playground: process.env.GQL_PLAYGROUND === 'enabled' ? true : false,
     }),
     TypeOrmModule.forRoot(TypeOrmConfig),
   ],
