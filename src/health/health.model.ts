@@ -4,10 +4,10 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  Timestamp,
   ManyToOne,
 } from 'typeorm';
 import { ObjectType, Field } from '@nestjs/graphql';
+import { UserDto } from '../users/user.dto';
 
 @ObjectType()
 @Entity()
@@ -26,5 +26,5 @@ export class HealthCheck extends BaseEntity {
 
   @Field()
   @ManyToOne((type) => User)
-  user?: User;
+  user?: UserDto;
 }

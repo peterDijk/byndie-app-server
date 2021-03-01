@@ -2,18 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+type UserDto {
   id: String!
   username: String!
   email: String!
-  password: String!
 }
 
 type HealthCheck {
   id: Float!
   message: String!
   dateCreated: DateTime!
-  user: User!
+  user: UserDto!
 }
 
 """
@@ -38,8 +37,8 @@ type Query {
 }
 
 type Mutation {
-  register(userData: CreateUserDto!): User!
-  login(password: String!, username: String!): LoginStatus!
+  register(input: CreateUserDto!): UserDto!
+  login(input: LoginUserDto!): LoginStatus!
 
   """Authorized"""
   addHealthCheck: HealthCheck!
@@ -48,5 +47,10 @@ type Mutation {
 input CreateUserDto {
   username: String!
   email: String!
+  password: String!
+}
+
+input LoginUserDto {
+  username: String!
   password: String!
 }
