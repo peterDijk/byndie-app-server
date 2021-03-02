@@ -65,14 +65,14 @@ export class Event extends BaseEntity {
   })
   dateTo: Date;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({
     type: 'text',
     nullable: true,
   })
   description: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({
     type: 'text',
     nullable: true,
