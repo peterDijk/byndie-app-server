@@ -23,9 +23,23 @@ export class RequestService {
   ) {}
 
   async create(eventId: string, user: User): Promise<Request> {
-    const event = await this.eventRepository.findOne({ id: eventId });
+    /*
+      is not own event
+
+
+    */
+    const event = await this.eventRepository.findOne(
+      { id: eventId },
+      { relations: ['user'] },
+    );
     if (!event) {
       throw new HttpException('cant find event', HttpStatus.BAD_REQUEST);
+    }
+    if (event.user.id === user.id) {
+      throw new HttpException(
+        'cant make request for your own event',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const request = await this.requestRepository.create({

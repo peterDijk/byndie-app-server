@@ -30,4 +30,9 @@ export class RequestResolver {
   async allRequests(): Promise<Request[]> {
     return await this.requestService.findAll();
   }
+
+  /*
+    get my requests
+    get requests for my events
+  */
 }
