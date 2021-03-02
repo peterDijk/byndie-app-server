@@ -15,6 +15,8 @@ export class UsersService {
     private locationRepo: Repository<Location>,
   ) {}
 
+  private readonly logger = new Logger(UsersService.name);
+
   async findOne(options?: unknown): Promise<UserDto> {
     const user = await this.userRepo.findOne(options);
     return user;
@@ -58,6 +60,7 @@ export class UsersService {
       where: [{ username }, { email }],
     });
     if (userInDb) {
+      this.logger.log('user already exists');
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
 

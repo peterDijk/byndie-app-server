@@ -22,7 +22,7 @@ export class AuthService {
     try {
       return await this.usersService.create(userDto);
     } catch (err) {
-      throw new HttpException('Error registration', HttpStatus.BAD_REQUEST);
+      throw new HttpException(err, HttpStatus.BAD_REQUEST);
     }
   }
 
