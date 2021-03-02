@@ -6,6 +6,15 @@ type UserDto {
   id: String!
   username: String!
   email: String!
+  lastName: String
+  firstName: String
+}
+
+type Location {
+  id: String!
+  country: String!
+  city: String!
+  LocationUsers: [UserDto!]!
 }
 
 type HealthCheck {
@@ -29,6 +38,18 @@ type HealthCheckResponse {
   message: String!
 }
 
+type Country {
+  id: String!
+  name: String!
+  CountryCities: [City!]!
+}
+
+type City {
+  id: String!
+  name: String!
+  CityCountry: Country!
+}
+
 type Query {
   """Simple healthcheck to test response of the server"""
   healthcheck: HealthCheckResponse!
@@ -39,7 +60,7 @@ type Query {
 
 type Mutation {
   """register a new user"""
-  register(input: CreateUserDto!): UserDto!
+  register(input: CreateUserDtoOpt!): UserDto!
 
   """login to get a token"""
   login(input: LoginUserDto!): LoginStatus!
@@ -50,10 +71,18 @@ type Mutation {
   addHealthCheck: HealthCheck!
 }
 
-input CreateUserDto {
+input CreateUserDtoOpt {
   username: String!
   email: String!
   password: String!
+  firstName: String
+  lastName: String
+  location: LocationInput!
+}
+
+input LocationInput {
+  country: String!
+  city: String!
 }
 
 input LoginUserDto {

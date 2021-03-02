@@ -1,10 +1,15 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { User } from './user.model';
 import { UsersService } from './users.service';
+import { LocationModule } from '../location/location.module';
+import { Location } from '../location/location.model';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [
+    forwardRef(() => LocationModule),
+    TypeOrmModule.forFeature([User, Location]),
+  ],
   controllers: [],
   providers: [UsersService],
   exports: [UsersService],

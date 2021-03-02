@@ -1,7 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/users/user.model';
-import { CreateUserDto, LoginUserDto, UserDto } from '../users/user.dto';
+import {
+  CreateUserDto,
+  CreateUserDtoOpt,
+  LoginUserDto,
+  UserDto,
+} from '../users/user.dto';
 import { UsersService } from '../users/users.service';
 import { JwtPayload, LoginStatus } from './auth.dto';
 
@@ -12,12 +17,12 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register(userDto: CreateUserDto): Promise<User> {
+  async register(userDto: CreateUserDtoOpt): Promise<User> {
     console.log({ userDto });
     try {
       return await this.usersService.create(userDto);
     } catch (err) {
-      throw new HttpException('Error registration', HttpStatus.BAD_REQUEST);
+      throw new HttpException(err, HttpStatus.BAD_REQUEST);
     }
   }
 
