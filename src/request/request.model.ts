@@ -22,6 +22,7 @@ export class Request extends BaseEntity {
   @Column({
     type: 'boolean',
     nullable: false,
+    default: false,
   })
   accepted: boolean;
 
