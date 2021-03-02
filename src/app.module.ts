@@ -15,6 +15,7 @@ import { EventTypeModule } from './eventtype/eventtype.module';
       autoSchemaFile: 'schema.gql',
       introspection: process.env.GQL_PLAYGROUND === 'enabled' ? true : false,
       playground: process.env.GQL_PLAYGROUND === 'enabled' ? true : false,
+      cors: true,
     }),
     TypeOrmModule.forRoot(TypeOrmConfig),
     EventModule,
