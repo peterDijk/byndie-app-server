@@ -1,7 +1,16 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Event } from '../event/event.model';
+import { EventModule } from '../event/event.module';
+import { Request } from './request.model';
+import { RequestResolver } from './request.resolver';
 import { RequestService } from './request.service';
 
 @Module({
-  providers: [RequestService],
+  imports: [
+    forwardRef(() => EventModule),
+    TypeOrmModule.forFeature([Request, Event]),
+  ],
+  providers: [RequestService, RequestResolver],
 })
 export class RequestModule {}

@@ -119,6 +119,7 @@ type Query {
 
   """Authorized - find 1 event"""
   oneEvent(id: String!): Event!
+  allRequests: [Request!]!
 }
 
 type Mutation {
@@ -133,6 +134,7 @@ type Mutation {
   """
   addHealthCheck: HealthCheck!
   addEvent(input: EventInput!): Event!
+  createRequestForEvent(input: RequestInput!): Request!
 }
 
 input CreateUserDtoOpt {
@@ -167,4 +169,8 @@ input EventInput {
 
 input EventTypeInput {
   name: String!
+}
+
+input RequestInput {
+  eventId: String!
 }

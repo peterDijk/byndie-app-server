@@ -35,4 +35,10 @@ export class RequestService {
 
     return await this.requestRepository.save(request);
   }
+
+  async findAll(): Promise<Request[]> {
+    return await this.requestRepository.find({
+      relations: ['user', 'event', 'event.user'],
+    });
+  }
 }

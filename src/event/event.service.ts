@@ -87,13 +87,13 @@ export class EventService {
   findOne(id: string): Promise<Event> {
     return this.eventRepository.findOne(
       { id },
-      { relations: ['eventType', 'user', 'location'] },
+      { relations: ['eventType', 'user', 'location', 'request'] },
     );
   }
 
   findAll(): Promise<Event[]> {
     return this.eventRepository.find({
-      relations: ['user', 'eventType', 'location'],
+      relations: ['user', 'eventType', 'location', 'request'],
     });
   }
 }
