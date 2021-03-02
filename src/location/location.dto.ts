@@ -13,7 +13,6 @@ export class CountryInput {
   name: string;
 }
 
-@ObjectType()
 @InputType()
 export class LocationInput {
   @Field()
@@ -22,5 +21,14 @@ export class LocationInput {
 
   @Field()
   @Optional()
+  city: string;
+}
+
+@ObjectType()
+export class LocationOutput {
+  @Field()
+  country: string;
+
+  @Field()
   city: string;
 }

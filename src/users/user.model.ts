@@ -62,7 +62,7 @@ export class User extends BaseEntity {
 
   @Field((type) => Location, { name: 'UserLocation' })
   @ManyToOne((type) => Location, (location) => location.users)
-  userLocation: Location;
+  location: Location;
 
   @BeforeInsert() async hashPassword() {
     try {

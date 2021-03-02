@@ -2,12 +2,18 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type LocationOutput {
+  country: String!
+  city: String!
+}
+
 type UserDto {
   id: String!
   username: String!
   email: String!
   lastName: String
   firstName: String
+  location: LocationOutput!
 }
 
 type Location {

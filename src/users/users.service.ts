@@ -80,7 +80,7 @@ export class UsersService {
         email,
         firstName,
         lastName,
-        userLocation: storedLocation, // this has to refer to a specific Location item
+        location: storedLocation, // this has to refer to a specific Location item
       });
 
       await this.userRepo.save(user);

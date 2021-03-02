@@ -44,8 +44,6 @@ export class Location extends BaseEntity {
   // locationCountry: Country;
 
   @Field((type) => [UserDto], { name: 'LocationUsers' })
-  @OneToMany((type) => User, (user) => user.userLocation, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany((type) => User, (user) => user.location)
   users: User[];
 }

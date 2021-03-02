@@ -2,7 +2,7 @@ import { Field, InputType, ObjectType, PartialType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 import { Location } from '../location/location.model';
 import config from '../../config';
-import { LocationInput } from '../location/location.dto';
+import { LocationInput, LocationOutput } from '../location/location.dto';
 import { Optional } from '@nestjs/common';
 
 @ObjectType()
@@ -22,8 +22,8 @@ export class UserDto {
   @Field({ nullable: true })
   firstName: string;
 
-  // @Field((type) => LocationInput, { name: 'UserLocationInput' })
-  // userLocation: LocationInput;
+  @Field((type) => LocationOutput)
+  location: Location;
 }
 
 @InputType()
