@@ -84,6 +84,13 @@ export class EventService {
     return await this.eventRepository.save(event);
   }
 
+  findOne(id: string): Promise<Event> {
+    return this.eventRepository.findOne(
+      { id },
+      { relations: ['eventType', 'user', 'location'] },
+    );
+  }
+
   findAll(): Promise<Event[]> {
     return this.eventRepository.find({
       relations: ['user', 'eventType', 'location'],
