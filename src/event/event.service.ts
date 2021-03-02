@@ -87,7 +87,15 @@ export class EventService {
   findOne(id: string): Promise<Event> {
     return this.eventRepository.findOne(
       { id },
-      { relations: ['eventType', 'user', 'location', 'request'] },
+      {
+        relations: [
+          'eventType',
+          'user',
+          'location',
+          'requests',
+          'requests.user',
+        ],
+      },
     );
   }
 
@@ -96,12 +104,15 @@ export class EventService {
     if (!userEvents) {
       throw new HttpException('user has no events', HttpStatus.NOT_FOUND);
     }
-    return await this.eventRepository.find({ where: { user } });
+    return await this.eventRepository.find({
+      where: { user },
+      relations: ['user', 'eventType', 'location', 'requests', 'requests.user'],
+    });
   }
 
   findAll(): Promise<Event[]> {
     return this.eventRepository.find({
-      relations: ['user', 'eventType', 'location', 'request'],
+      relations: ['user', 'eventType', 'location', 'requests', 'requests.user'],
     });
   }
 }
