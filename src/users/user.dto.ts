@@ -21,12 +21,15 @@ export class UserDto {
 
   @Field({ nullable: true })
   firstName: string;
+
+  @Field({ nullable: true })
+  location: LocationOutput;
 }
 
 @ObjectType()
 export class UserOutput extends UserDto {
-  @Field((type) => LocationOutput)
-  location: Location;
+  @Field({ nullable: true })
+  username: string;
 }
 
 @InputType()
@@ -67,9 +70,6 @@ export class CreateUserDtoOpt extends PartialType(CreateUserDto) {
 
   @Field()
   password: string;
-
-  @Field((type) => LocationInput)
-  location: Location;
 }
 
 @InputType()

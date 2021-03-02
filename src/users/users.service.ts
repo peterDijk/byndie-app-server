@@ -2,7 +2,12 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { User } from './user.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto, LoginUserDto, UserDto } from './user.dto';
+import {
+  CreateUserDto,
+  CreateUserDtoOpt,
+  LoginUserDto,
+  UserDto,
+} from './user.dto';
 import * as bcrypt from 'bcrypt';
 import { Location } from '../location/location.model';
 
@@ -45,7 +50,7 @@ export class UsersService {
     });
   }
 
-  async create(userDto: CreateUserDto): Promise<User> {
+  async create(userDto: CreateUserDtoOpt): Promise<User> {
     const {
       password,
       email,
@@ -66,7 +71,7 @@ export class UsersService {
 
     try {
       let storedLocation;
-      if (location.country || location.city) {
+      if (location?.country || location?.city) {
         // exists?
         const findLocation = await this.locationRepo.findOne({
           where: { city: location.city, country: location.country },
