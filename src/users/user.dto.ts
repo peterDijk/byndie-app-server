@@ -21,7 +21,10 @@ export class UserDto {
 
   @Field({ nullable: true })
   firstName: string;
+}
 
+@ObjectType()
+export class UserOutput extends UserDto {
   @Field((type) => LocationOutput)
   location: Location;
 }

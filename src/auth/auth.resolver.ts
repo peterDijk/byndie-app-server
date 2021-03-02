@@ -5,6 +5,7 @@ import {
   CreateUserDtoOpt,
   LoginUserDto,
   UserDto,
+  UserOutput,
 } from '../users/user.dto';
 import { User } from '../users/user.model';
 import { UsersService } from '../users/users.service';
@@ -18,7 +19,7 @@ export class AuthResolver {
     @Inject(UsersService) private usersService: UsersService,
   ) {}
 
-  @Mutation((returns) => UserDto, { description: 'register a new user' })
+  @Mutation((returns) => UserOutput, { description: 'register a new user' })
   async register(@Args('input') userDto: CreateUserDtoOpt): Promise<User> {
     return await this.authService.register(userDto);
   }

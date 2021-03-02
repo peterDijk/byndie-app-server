@@ -13,6 +13,14 @@ type UserDto {
   email: String!
   lastName: String
   firstName: String
+}
+
+type UserOutput {
+  id: String!
+  username: String!
+  email: String!
+  lastName: String
+  firstName: String
   location: LocationOutput!
 }
 
@@ -66,7 +74,7 @@ type Query {
 
 type Mutation {
   """register a new user"""
-  register(input: CreateUserDtoOpt!): UserDto!
+  register(input: CreateUserDtoOpt!): UserOutput!
 
   """login to get a token"""
   login(input: LoginUserDto!): LoginStatus!
