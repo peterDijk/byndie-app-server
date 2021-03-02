@@ -29,11 +29,11 @@ export class Event extends BaseEntity {
   })
   name: string;
 
-  @Field((type) => EventType)
+  @Field((type) => EventType, { nullable: true })
   @ManyToOne((type) => EventType, (eventType) => eventType.events)
   eventType: EventType;
 
-  @Field((type) => LocationOutput)
+  @Field((type) => LocationOutput, { nullable: true })
   @ManyToOne((type) => Location, (location) => location.events)
   location: Location;
 

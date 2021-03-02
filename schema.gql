@@ -33,8 +33,8 @@ type EventType {
 type Event {
   id: String!
   name: String!
-  eventType: EventType!
-  location: LocationOutput!
+  eventType: EventType
+  location: LocationOutput
   user: UserOutput
   maxPeople: Float!
   dateFrom: DateTime!

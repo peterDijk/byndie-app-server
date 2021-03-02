@@ -68,6 +68,8 @@ export class EventService {
   }
 
   findAll(): Promise<Event[]> {
-    return this.eventRepository.find({ relations: ['user'] });
+    return this.eventRepository.find({
+      relations: ['user', 'eventType', 'location'],
+    });
   }
 }
