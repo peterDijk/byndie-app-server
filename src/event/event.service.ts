@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/user.model';
-import { Repository } from 'typeorm';
-import { EventInput } from './event.dto';
+import { Between, FindManyOptions, Like, Repository } from 'typeorm';
+import { EventInput, FilterInput } from './event.dto';
 import { Event } from './event.model';
 import { EventType } from '../eventtype/eventtype.model';
 import { Location } from '../location/location.model';
@@ -110,9 +110,32 @@ export class EventService {
     });
   }
 
-  findAll(): Promise<Event[]> {
+  async findAll(filter?: FilterInput): Promise<Event[]> {
+    let ormFilter: FindManyOptions<Event>;
+
+    if (filter?.eventType) {
+      const storedEventType = await this.eventTypeRepository.findOne({
+        where: { name: filter.eventType.name },
+      });
+      if (storedEventType) {
+        ormFilter = { eventType: storedEventType } as FindManyOptions<Event>;
+      }
+    }
+
+    if (filter?.dateFrom && filter?.dateTo) {
+      ormFilter = {
+        ...ormFilter,
+        dateFrom: Between(filter.dateFrom, filter.dateTo),
+      } as FindManyOptions<Event>;
+    }
+
     return this.eventRepository.find({
+      where: { ...ormFilter },
       relations: ['user', 'eventType', 'location', 'requests', 'requests.user'],
     });
+  }
+
+  findAllEventTypes(): Promise<EventType[]> {
+    return this.eventTypeRepository.find();
   }
 }
