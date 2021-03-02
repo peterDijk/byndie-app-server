@@ -60,7 +60,7 @@ type Query {
 
 type Mutation {
   """register a new user"""
-  register(input: CreateUserDto!): UserDto!
+  register(input: CreateUserDtoOpt!): UserDto!
 
   """login to get a token"""
   login(input: LoginUserDto!): LoginStatus!
@@ -71,12 +71,12 @@ type Mutation {
   addHealthCheck: HealthCheck!
 }
 
-input CreateUserDto {
+input CreateUserDtoOpt {
   username: String!
   email: String!
   password: String!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
   location: LocationInput!
 }
 

@@ -1,6 +1,11 @@
 import { Inject } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { CreateUserDto, LoginUserDto, UserDto } from '../users/user.dto';
+import {
+  CreateUserDto,
+  CreateUserDtoOpt,
+  LoginUserDto,
+  UserDto,
+} from '../users/user.dto';
 import { User } from '../users/user.model';
 import { UsersService } from '../users/users.service';
 import { LoginStatus } from './auth.dto';
@@ -14,7 +19,7 @@ export class AuthResolver {
   ) {}
 
   @Mutation((returns) => UserDto, { description: 'register a new user' })
-  async register(@Args('input') userDto: CreateUserDto): Promise<User> {
+  async register(@Args('input') userDto: CreateUserDtoOpt): Promise<User> {
     return await this.authService.register(userDto);
   }
 

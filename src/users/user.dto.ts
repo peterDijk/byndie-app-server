@@ -51,7 +51,7 @@ export class CreateUserDto {
   lastName?: string;
 
   @Field((type) => LocationInput)
-  location?: Location;
+  location: Location;
 }
 
 @InputType()
@@ -64,6 +64,9 @@ export class CreateUserDtoOpt extends PartialType(CreateUserDto) {
 
   @Field()
   password: string;
+
+  @Field((type) => LocationInput)
+  location: Location;
 }
 
 @InputType()

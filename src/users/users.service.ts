@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { User } from './user.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -62,11 +62,14 @@ export class UsersService {
     }
 
     try {
-      const locationEntity = await this.locationRepo.create({
-        city: location.city,
-        country: location.country,
-      });
-      const storedLocation = await this.locationRepo.save(locationEntity);
+      let storedLocation;
+      if (location.country || location.city) {
+        const locationEntity = await this.locationRepo.create({
+          city: location.city,
+          country: location.country,
+        });
+        storedLocation = await this.locationRepo.save(locationEntity);
+      }
 
       const user: User = await this.userRepo.create({
         username,
@@ -74,7 +77,7 @@ export class UsersService {
         email,
         firstName,
         lastName,
-        userLocation: storedLocation, // this has to refer to a specific Location item
+        // userLocation: storedLocation, // this has to refer to a specific Location item
       });
 
       await this.userRepo.save(user);
