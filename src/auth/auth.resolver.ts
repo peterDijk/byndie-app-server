@@ -1,5 +1,5 @@
-import { Inject } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Inject, UseGuards } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   CreateUserDto,
   CreateUserDtoOpt,
@@ -9,8 +9,9 @@ import {
 } from '../users/user.dto';
 import { User } from '../users/user.model';
 import { UsersService } from '../users/users.service';
-import { LoginStatus } from './auth.dto';
+import { IsLoggedIn, LoginStatus } from './auth.dto';
 import { AuthService } from './auth.service';
+import { GqlAuthGuard } from './graphql.guard';
 
 @Resolver((of) => User)
 export class AuthResolver {
@@ -29,5 +30,13 @@ export class AuthResolver {
     const result = await this.authService.login({ username, password });
     console.log({ result });
     return result;
+  }
+
+  @Query((returns) => IsLoggedIn)
+  @UseGuards(GqlAuthGuard)
+  async isLoggedIn() {
+    return {
+      status: true,
+    };
   }
 }
