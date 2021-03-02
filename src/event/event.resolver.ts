@@ -32,4 +32,10 @@ export class EventResolver {
   async allEvents(): Promise<Event[]> {
     return await this.eventService.findAll();
   }
+
+  @Query((returns) => Event, { description: 'Authorized - find 1 event' })
+  @UseGuards(GqlAuthGuard)
+  async oneEvent(@Args('id') id: string) {
+    return await this.eventService.findOne(id);
+  }
 }

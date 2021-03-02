@@ -98,6 +98,9 @@ type Query {
 
   """Authorized - list all stored events"""
   allEvents: [Event!]!
+
+  """Authorized - find 1 event"""
+  oneEvent(id: String!): Event!
 }
 
 type Mutation {
