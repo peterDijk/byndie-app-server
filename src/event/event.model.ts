@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { User } from '../users/user.model';
-import { UserDto } from '../users/user.dto';
+import { UserDto, UserOutput } from '../users/user.dto';
 import { EventType } from '../eventtype/eventtype.model';
 import { Location } from '../location/location.model';
 import { LocationOutput } from '../location/location.dto';
@@ -34,13 +34,18 @@ export class Event extends BaseEntity {
   eventType: EventType;
 
   @Field((type) => LocationOutput)
-  @OneToMany((type) => Location, (location) => location.events)
+  @ManyToOne((type) => Location, (location) => location.events)
   location: Location;
+
+  @Field((type) => UserOutput, { nullable: true })
+  @ManyToOne((type) => User, (user) => user.events)
+  user: User;
 
   @Field()
   @Column({
     type: 'int',
     nullable: false,
+    default: 1,
   })
   maxPeople: number;
 
@@ -63,14 +68,14 @@ export class Event extends BaseEntity {
   @Field()
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
   })
   description: string;
 
   @Field()
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
   })
   details: string;
 }

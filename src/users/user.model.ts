@@ -14,6 +14,7 @@ import * as bcrypt from 'bcrypt';
 import config from '../../config';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Location } from '../location/location.model';
+import { Event } from '../event/event.model';
 
 @ObjectType()
 @Entity()
@@ -63,6 +64,9 @@ export class User extends BaseEntity {
   @Field((type) => Location, { name: 'UserLocation' })
   @ManyToOne((type) => Location, (location) => location.users)
   location: Location;
+
+  @OneToMany((type) => Event, (event) => event.user)
+  events: Event[];
 
   @BeforeInsert() async hashPassword() {
     try {

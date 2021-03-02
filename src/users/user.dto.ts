@@ -10,10 +10,10 @@ export class UserDto {
   @Field()
   id: string;
 
-  @Field()
+  @Field({ nullable: true })
   username: string;
 
-  @Field()
+  @Field({ nullable: true })
   email: string;
 
   @Field({ nullable: true })

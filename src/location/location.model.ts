@@ -48,6 +48,6 @@ export class Location extends BaseEntity {
   @OneToMany((type) => User, (user) => user.location)
   users: User[];
 
-  @ManyToOne((type) => Event, (event) => event.location)
+  @OneToMany((type) => Event, (event) => event.location)
   events: Event[];
 }
