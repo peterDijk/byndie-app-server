@@ -35,7 +35,7 @@ export class EventService {
 
     if (eventDto.eventType.name) {
       const findEventType = await this.eventTypeRepository.findOne({
-        where: [{ name: eventType.name }],
+        where: { name: eventType.name },
       });
 
       if (findEventType) {
@@ -68,8 +68,6 @@ export class EventService {
         storedLocation = await this.locationRepository.save(locationEntity);
       }
     }
-
-    this.logger.log({ dateFrom, dateTo });
 
     const event: Event = await this.eventRepository.create({
       name: name,
