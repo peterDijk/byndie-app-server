@@ -13,6 +13,7 @@ type UserDto {
   email: String
   lastName: String
   firstName: String
+  location: LocationOutput
 }
 
 type UserOutput {
@@ -21,7 +22,7 @@ type UserOutput {
   email: String
   lastName: String
   firstName: String
-  location: LocationOutput!
+  location: LocationOutput
 }
 
 type EventType {
@@ -151,7 +152,7 @@ input CreateUserDtoOpt {
   password: String!
   firstName: String
   lastName: String
-  location: LocationInput!
+  location: LocationInput
 }
 
 input LocationInput {
