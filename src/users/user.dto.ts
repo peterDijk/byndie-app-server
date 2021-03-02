@@ -16,10 +16,10 @@ export class UserDto {
   @Field()
   email: string;
 
-  @Field()
+  @Field({ nullable: true })
   lastName: string;
 
-  @Field()
+  @Field({ nullable: true })
   firstName: string;
 
   // @Field((type) => LocationInput, { name: 'UserLocationInput' })

@@ -6,8 +6,8 @@ type UserDto {
   id: String!
   username: String!
   email: String!
-  lastName: String!
-  firstName: String!
+  lastName: String
+  firstName: String
 }
 
 type Location {
