@@ -27,6 +27,23 @@ $ npm run migration:run
 $ npm run migration:generate -- [migration-name]
 ```
 
+## Environment variables
+
+create the .env file
+
+```bash
+$ touch ./.env
+```
+
+in the `.env` file add the following:
+
+```
+JWT_SECRET=secret
+EXPIRES_IN=1d
+MIN_PW_LENGTH=3
+GQL_PLAYGROUND=enabled
+```
+
 ## Running the app
 
 ```bash
