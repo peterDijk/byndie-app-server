@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/user.model';
 import { Repository } from 'typeorm';
@@ -18,31 +18,43 @@ export class EventService {
     private locationRepository: Repository<Location>,
   ) {}
 
+  private readonly logger = new Logger(EventService.name);
+
   async create(eventDto: EventInput, user: User): Promise<Event> {
+    const {
+      name,
+      eventType,
+      location,
+      maxPeople,
+      dateFrom,
+      dateTo,
+      description,
+      details,
+    } = eventDto;
     let storedEventType;
 
     if (eventDto.eventType.name) {
       const findEventType = await this.eventTypeRepository.findOne({
-        where: [{ name: eventDto.eventType.name }],
+        where: [{ name: eventType.name }],
       });
 
       if (findEventType) {
         storedEventType = findEventType;
       } else {
         const newEventType = await this.eventTypeRepository.create({
-          name: eventDto.eventType.name,
+          name: eventType.name,
         });
         storedEventType = await this.eventTypeRepository.save(newEventType);
       }
     }
 
     let storedLocation;
-    if (eventDto.location.country || eventDto.location.city) {
+    if (location.country || location.city) {
       // exists?
       const findLocation = await this.locationRepository.findOne({
         where: {
-          city: eventDto.location.city,
-          country: eventDto.location.country,
+          city: location.city,
+          country: location.country,
         },
       });
 
@@ -50,18 +62,25 @@ export class EventService {
         storedLocation = findLocation;
       } else {
         const locationEntity = await this.locationRepository.create({
-          city: eventDto.location.city,
-          country: eventDto.location.country,
+          city: location.city,
+          country: location.country,
         });
         storedLocation = await this.locationRepository.save(locationEntity);
       }
     }
 
+    this.logger.log({ dateFrom, dateTo });
+
     const event: Event = await this.eventRepository.create({
-      name: eventDto.name,
+      name: name,
       user,
       eventType: storedEventType,
       location: storedLocation,
+      maxPeople,
+      dateFrom,
+      dateTo,
+      description,
+      details,
     });
 
     return await this.eventRepository.save(event);

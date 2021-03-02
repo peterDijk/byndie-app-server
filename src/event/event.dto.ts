@@ -14,4 +14,19 @@ export class EventInput {
 
   @Field((type) => LocationInput)
   location: Location;
+
+  @Field()
+  maxPeople: number;
+
+  @Field()
+  dateFrom: Date;
+
+  @Field()
+  dateTo: Date;
+
+  @Field()
+  description: string;
+
+  @Field()
+  details: string;
 }

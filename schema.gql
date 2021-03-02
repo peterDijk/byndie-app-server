@@ -131,6 +131,11 @@ input EventInput {
   name: String!
   eventType: EventTypeInput!
   location: LocationInput!
+  maxPeople: Float!
+  dateFrom: DateTime!
+  dateTo: DateTime!
+  description: String!
+  details: String!
 }
 
 input EventTypeInput {
