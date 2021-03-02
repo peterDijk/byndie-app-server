@@ -4,6 +4,8 @@ import TypeOrmConfig from '../ormconfig';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
+import { EventModule } from './event/event.module';
+import { EventTypeModule } from './eventtype/eventtype.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { GraphQLModule } from '@nestjs/graphql';
       playground: process.env.GQL_PLAYGROUND === 'enabled' ? true : false,
     }),
     TypeOrmModule.forRoot(TypeOrmConfig),
+    EventModule,
+    EventTypeModule,
   ],
 })
 export class AppModule {}

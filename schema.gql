@@ -9,20 +9,44 @@ type LocationOutput {
 
 type UserDto {
   id: String!
-  username: String!
-  email: String!
+  username: String
+  email: String
   lastName: String
   firstName: String
 }
 
 type UserOutput {
   id: String!
-  username: String!
-  email: String!
+  username: String
+  email: String
   lastName: String
   firstName: String
   location: LocationOutput!
 }
+
+type EventType {
+  id: String!
+  name: String!
+  events: [Event!]!
+}
+
+type Event {
+  id: String!
+  name: String!
+  eventType: EventType
+  location: LocationOutput
+  user: UserOutput
+  maxPeople: Float!
+  dateFrom: DateTime!
+  dateTo: DateTime!
+  description: String
+  details: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Location {
   id: String!
@@ -37,11 +61,6 @@ type HealthCheck {
   dateCreated: DateTime!
   user: UserDto!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type LoginStatus {
   email: String!
@@ -70,6 +89,9 @@ type Query {
 
   """Authorized - list all stored healthchecks"""
   allHealthChecks: [HealthCheck!]!
+
+  """Authorized - list all stored events"""
+  allEvents: [Event!]!
 }
 
 type Mutation {
@@ -83,6 +105,7 @@ type Mutation {
   Authorized - store a new healthcheck in the database (test for db storage
   """
   addHealthCheck: HealthCheck!
+  addEvent(input: EventInput!): Event!
 }
 
 input CreateUserDtoOpt {
@@ -102,4 +125,19 @@ input LocationInput {
 input LoginUserDto {
   username: String!
   password: String!
+}
+
+input EventInput {
+  name: String!
+  eventType: EventTypeInput!
+  location: LocationInput!
+  maxPeople: Float!
+  dateFrom: DateTime!
+  dateTo: DateTime!
+  description: String!
+  details: String!
+}
+
+input EventTypeInput {
+  name: String!
 }
