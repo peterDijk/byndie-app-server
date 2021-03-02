@@ -20,4 +20,8 @@ export class EventService {
 
     return await this.eventRepo.save(event);
   }
+
+  findAll(): Promise<Event[]> {
+    return this.eventRepo.find({ relations: ['user'] });
+  }
 }

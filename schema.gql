@@ -89,6 +89,9 @@ type Query {
 
   """Authorized - list all stored healthchecks"""
   allHealthChecks: [HealthCheck!]!
+
+  """Authorized - list all stored events"""
+  allEvents: [Event!]!
 }
 
 type Mutation {
