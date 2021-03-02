@@ -50,6 +50,42 @@ export class RequestService {
     return await this.requestRepository.save(request);
   }
 
+  async accept(requestId: string, currentUser: User): Promise<Request> {
+    const request = await this.requestRepository.findOne(requestId, {
+      relations: ['event', 'event.user'],
+    });
+
+    if (request.event.user.id !== currentUser.id) {
+      throw new HttpException(
+        'cant accept a request thats not for your own event',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    request.accepted = true;
+    request.declined = false;
+
+    return await this.requestRepository.save(request);
+  }
+
+  async decline(requestId: string, currentUser: User): Promise<Request> {
+    const request = await this.requestRepository.findOne(requestId, {
+      relations: ['event', 'event.user'],
+    });
+
+    if (request.event.user.id !== currentUser.id) {
+      throw new HttpException(
+        'cant decline a request thats not for your own event',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    request.accepted = false;
+    request.declined = true;
+
+    return await this.requestRepository.save(request);
+  }
+
   async findAll(): Promise<Request[]> {
     return await this.requestRepository.find({
       relations: ['user', 'event', 'event.user'],

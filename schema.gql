@@ -33,6 +33,8 @@ type EventType {
 type Request {
   id: String!
   accepted: Boolean!
+  declined: Boolean!
+  message: String!
   user: User
   event: Event
 }
@@ -139,6 +141,8 @@ type Mutation {
   addHealthCheck: HealthCheck!
   addEvent(input: EventInput!): Event!
   createRequestForEvent(input: RequestInput!): Request!
+  acceptRequest(requestId: String!): Request!
+  declineRequest(requestId: String!): Request!
 }
 
 input CreateUserDtoOpt {

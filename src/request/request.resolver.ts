@@ -25,6 +25,24 @@ export class RequestResolver {
     return await this.requestService.create(input.eventId, user);
   }
 
+  @Mutation((returns) => Request)
+  @UseGuards(GqlAuthGuard)
+  async acceptRequest(
+    @Args('requestId') requestId: string,
+    @CurrentUser() user: User,
+  ): Promise<Request> {
+    return await this.requestService.accept(requestId, user);
+  }
+
+  @Mutation((returns) => Request)
+  @UseGuards(GqlAuthGuard)
+  async declineRequest(
+    @Args('requestId') requestId: string,
+    @CurrentUser() user: User,
+  ): Promise<Request> {
+    return await this.requestService.decline(requestId, user);
+  }
+
   @Query((returns) => [Request])
   @UseGuards(GqlAuthGuard)
   async allRequests(): Promise<Request[]> {
@@ -36,8 +54,4 @@ export class RequestResolver {
   async requestsForMyEvents(@CurrentUser() user: User): Promise<Request[]> {
     return await this.requestService.findUserEventsRequests(user);
   }
-  /*
-    get requests for my events
-    get my requests
-  */
 }

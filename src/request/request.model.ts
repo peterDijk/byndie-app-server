@@ -26,6 +26,22 @@ export class Request extends BaseEntity {
   })
   accepted: boolean;
 
+  @Field()
+  @Column({
+    type: 'boolean',
+    nullable: false,
+    default: false,
+  })
+  declined: boolean;
+
+  @Field()
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    default: false,
+  })
+  message: string;
+
   @Field((type) => User, { nullable: true })
   @ManyToOne((type) => User)
   user: User;
