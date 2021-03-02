@@ -1,5 +1,7 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EventType } from '../eventtype/eventtype.model';
+import { EventtypeModule } from '../eventtype/eventtype.module';
 import { User } from '../users/user.model';
 import { UsersModule } from '../users/users.module';
 import { Event } from './event.model';
@@ -9,7 +11,8 @@ import { EventService } from './event.service';
 @Module({
   imports: [
     forwardRef(() => UsersModule),
-    TypeOrmModule.forFeature([Event, User]),
+    forwardRef(() => EventtypeModule),
+    TypeOrmModule.forFeature([Event, User, EventType]),
   ],
   providers: [EventResolver, EventService],
 })

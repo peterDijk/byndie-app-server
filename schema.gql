@@ -129,4 +129,9 @@ input LoginUserDto {
 
 input EventInput {
   name: String!
+  eventType: EventTypeInput!
+}
+
+input EventTypeInput {
+  name: String!
 }

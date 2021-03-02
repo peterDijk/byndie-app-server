@@ -26,6 +26,6 @@ export class EventType extends BaseEntity {
   name: string;
 
   @Field((type) => [Event])
-  @ManyToOne((type) => Event, (event) => event.eventType)
+  @OneToMany((type) => Event, (event) => event.eventType)
   events: Event[];
 }

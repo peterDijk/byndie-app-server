@@ -30,7 +30,7 @@ export class Event extends BaseEntity {
   name: string;
 
   @Field((type) => EventType)
-  @OneToMany((type) => EventType, (eventType) => eventType.events)
+  @ManyToOne((type) => EventType, (eventType) => eventType.events)
   eventType: EventType;
 
   @Field((type) => LocationOutput)
