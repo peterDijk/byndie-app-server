@@ -5,7 +5,7 @@ import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { EventModule } from './event/event.module';
-import { EventtypeModule } from './eventtype/eventtype.module';
+import { EventTypeModule } from './eventtype/eventtype.module';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { EventtypeModule } from './eventtype/eventtype.module';
     }),
     TypeOrmModule.forRoot(TypeOrmConfig),
     EventModule,
-    EventtypeModule,
+    EventTypeModule,
   ],
 })
 export class AppModule {}
