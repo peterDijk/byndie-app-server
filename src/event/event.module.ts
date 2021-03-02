@@ -9,14 +9,18 @@ import { UsersModule } from '../users/users.module';
 import { Event } from './event.model';
 import { EventResolver } from './event.resolver';
 import { EventService } from './event.service';
+import { RequestModule } from '../request/request.module';
+import { Request } from '../request/request.model';
+import { RequestService } from '../request/request.service';
 
 @Module({
   imports: [
     forwardRef(() => UsersModule),
     forwardRef(() => EventTypeModule),
     forwardRef(() => LocationModule),
-    TypeOrmModule.forFeature([Event, User, EventType, Location]),
+    forwardRef(() => RequestModule),
+    TypeOrmModule.forFeature([Event, User, EventType, Location, Request]),
   ],
-  providers: [EventResolver, EventService],
+  providers: [EventResolver, EventService, RequestService],
 })
 export class EventModule {}

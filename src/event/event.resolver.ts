@@ -2,16 +2,16 @@ import { Inject, Logger, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Event } from './event.model';
 import { EventInput } from './event.dto';
-import { UsersService } from '../users/users.service';
 import { EventService } from './event.service';
 import { CurrentUser, GqlAuthGuard } from '../auth/graphql.guard';
 import { User } from '../users/user.model';
+import { RequestService } from '../request/request.service';
 
 @Resolver((of) => Event)
 export class EventResolver {
   constructor(
     @Inject(EventService) private eventService: EventService,
-    @Inject(UsersService) private usersService: UsersService,
+    @Inject(RequestService) private requestService: RequestService,
   ) {}
 
   private readonly logger = new Logger(EventResolver.name);
@@ -23,6 +23,14 @@ export class EventResolver {
     @CurrentUser() user: User,
   ): Promise<Event> {
     return await this.eventService.create(eventDto, user);
+  }
+
+  @Query((returns) => [Event], {
+    description: 'Authorized - list events owned by logged in user',
+  })
+  @UseGuards(GqlAuthGuard)
+  async myEvents(@CurrentUser() user: User): Promise<Event[]> {
+    return await this.eventService.findMyEvents(user);
   }
 
   @Query((returns) => [Event], {

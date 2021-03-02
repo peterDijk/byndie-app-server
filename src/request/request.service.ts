@@ -1,0 +1,71 @@
+import {
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../users/user.model';
+import { In, Repository } from 'typeorm';
+import { EventType } from '../eventtype/eventtype.model';
+import { Location } from '../location/location.model';
+import { Event } from '../event/event.model';
+import { Request } from './request.model';
+
+@Injectable()
+export class RequestService {
+  constructor(
+    @InjectRepository(Event)
+    private eventRepository: Repository<Event>,
+    @InjectRepository(Request)
+    private requestRepository: Repository<Request>,
+  ) {}
+
+  async create(eventId: string, user: User): Promise<Request> {
+    /*
+
+
+    */
+    const event = await this.eventRepository.findOne(
+      { id: eventId },
+      { relations: ['user'] },
+    );
+    if (!event) {
+      throw new HttpException('cant find event', HttpStatus.BAD_REQUEST);
+    }
+
+    if (event.user.id === user.id) {
+      throw new HttpException(
+        'cant make request for your own event',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const request = await this.requestRepository.create({
+      user,
+      event,
+    });
+
+    return await this.requestRepository.save(request);
+  }
+
+  async findAll(): Promise<Request[]> {
+    return await this.requestRepository.find({
+      relations: ['user', 'event', 'event.user'],
+    });
+  }
+
+  async findUserEventsRequests(user: User): Promise<Request[]> {
+    const userEvents = await this.eventRepository.find({ where: { user } });
+    if (!userEvents) {
+      throw new HttpException('user has no events', HttpStatus.NOT_FOUND);
+    }
+    const userRequests = await this.requestRepository.find({
+      where: { event: In(userEvents.map((event) => event.id)) },
+      relations: ['event', 'user'],
+    });
+
+    return userRequests;
+  }
+}
