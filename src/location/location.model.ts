@@ -12,6 +12,7 @@ import { City } from './city.model';
 import { Country } from './country.model';
 import { User } from '../users/user.model';
 import { UserDto } from '../users/user.dto';
+import { Event } from '../event/event.model';
 
 // @InputType()
 @ObjectType()
@@ -46,4 +47,7 @@ export class Location extends BaseEntity {
   @Field((type) => [UserDto], { name: 'LocationUsers' })
   @OneToMany((type) => User, (user) => user.location)
   users: User[];
+
+  @ManyToOne((type) => Event, (event) => event.location)
+  events: Event[];
 }
