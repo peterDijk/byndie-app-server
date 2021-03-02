@@ -1,4 +1,4 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType, PartialType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 import { Location } from '../location/location.model';
 import config from '../../config';
@@ -52,6 +52,18 @@ export class CreateUserDto {
 
   @Field((type) => LocationInput)
   location?: Location;
+}
+
+@InputType()
+export class CreateUserDtoOpt extends PartialType(CreateUserDto) {
+  @Field()
+  username: string;
+
+  @Field()
+  email: string;
+
+  @Field()
+  password: string;
 }
 
 @InputType()
