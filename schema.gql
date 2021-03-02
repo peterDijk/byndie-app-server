@@ -126,6 +126,9 @@ type Query {
   """Authorized - list all event types"""
   allEventTypes: [EventType!]!
 
+  """Authorized - list all locations"""
+  allLocations: [Location!]!
+
   """Authorized - find 1 event"""
   oneEvent(id: String!): Event!
   allRequests: [Request!]!

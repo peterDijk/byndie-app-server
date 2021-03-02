@@ -2,11 +2,8 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/user.model';
 import {
-  Between,
   FindManyOptions,
   LessThanOrEqual,
-  Like,
-  MoreThan,
   MoreThanOrEqual,
   Repository,
 } from 'typeorm';
@@ -188,5 +185,9 @@ export class EventService {
 
   findAllEventTypes(): Promise<EventType[]> {
     return this.eventTypeRepository.find();
+  }
+
+  findAllLocations(): Promise<Location[]> {
+    return this.locationRepository.find();
   }
 }

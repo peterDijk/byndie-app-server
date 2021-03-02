@@ -7,6 +7,7 @@ import { CurrentUser, GqlAuthGuard } from '../auth/graphql.guard';
 import { User } from '../users/user.model';
 import { RequestService } from '../request/request.service';
 import { EventType } from '../eventtype/eventtype.model';
+import { Location } from '../location/location.model';
 
 @Resolver((of) => Event)
 export class EventResolver {
@@ -53,6 +54,14 @@ export class EventResolver {
   @UseGuards(GqlAuthGuard)
   async allEventTypes(): Promise<EventType[]> {
     return await this.eventService.findAllEventTypes();
+  }
+
+  @Query((returns) => [Location], {
+    description: 'Authorized - list all locations',
+  })
+  @UseGuards(GqlAuthGuard)
+  async allLocations(): Promise<Location[]> {
+    return await this.eventService.findAllLocations();
   }
 
   @Query((returns) => Event, { description: 'Authorized - find 1 event' })
