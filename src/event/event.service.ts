@@ -1,7 +1,15 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/user.model';
-import { Between, FindManyOptions, Like, Repository } from 'typeorm';
+import {
+  Between,
+  FindManyOptions,
+  LessThanOrEqual,
+  Like,
+  MoreThan,
+  MoreThanOrEqual,
+  Repository,
+} from 'typeorm';
 import { EventInput, FilterInput } from './event.dto';
 import { Event } from './event.model';
 import { EventType } from '../eventtype/eventtype.model';
@@ -112,8 +120,9 @@ export class EventService {
 
   async findAll(filter?: FilterInput): Promise<Event[]> {
     let ormFilter: FindManyOptions<Event>;
+    const { eventType, dateTo, dateFrom } = filter;
 
-    if (filter?.eventType) {
+    if (eventType) {
       const storedEventType = await this.eventTypeRepository.findOne({
         where: { name: filter.eventType.name },
       });
@@ -122,10 +131,17 @@ export class EventService {
       }
     }
 
-    if (filter?.dateFrom && filter?.dateTo) {
+    if (dateFrom) {
       ormFilter = {
         ...ormFilter,
-        dateFrom: Between(filter.dateFrom, filter.dateTo),
+        dateFrom: MoreThanOrEqual(filter.dateFrom),
+      } as FindManyOptions<Event>;
+    }
+
+    if (dateTo) {
+      ormFilter = {
+        ...ormFilter,
+        dateTo: LessThanOrEqual(filter.dateTo),
       } as FindManyOptions<Event>;
     }
 
