@@ -67,11 +67,20 @@ export class UsersService {
     try {
       let storedLocation;
       if (location.country || location.city) {
-        const locationEntity = await this.locationRepo.create({
-          city: location.city,
-          country: location.country,
+        // exists?
+        const findLocation = await this.locationRepo.findOne({
+          where: [{ city: location.city }, { country: location.country }],
         });
-        storedLocation = await this.locationRepo.save(locationEntity);
+
+        if (findLocation) {
+          storedLocation = findLocation;
+        } else {
+          const locationEntity = await this.locationRepo.create({
+            city: location.city,
+            country: location.country,
+          });
+          storedLocation = await this.locationRepo.save(locationEntity);
+        }
       }
 
       const user: User = await this.userRepo.create({
