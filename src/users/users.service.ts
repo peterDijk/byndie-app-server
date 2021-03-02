@@ -69,7 +69,7 @@ export class UsersService {
       if (location.country || location.city) {
         // exists?
         const findLocation = await this.locationRepo.findOne({
-          where: [{ city: location.city }, { country: location.country }],
+          where: { city: location.city, country: location.country },
         });
 
         if (findLocation) {
