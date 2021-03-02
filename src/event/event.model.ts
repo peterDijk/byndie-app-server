@@ -13,6 +13,8 @@ import { UserDto, UserOutput } from '../users/user.dto';
 import { EventType } from '../eventtype/eventtype.model';
 import { Location } from '../location/location.model';
 import { LocationOutput } from '../location/location.dto';
+import { Req } from '@nestjs/common';
+import { Request } from '../request/request.model';
 
 // @InputType()
 @ObjectType()
@@ -78,4 +80,8 @@ export class Event extends BaseEntity {
     nullable: true,
   })
   details: string;
+
+  @Field((type) => [Request])
+  @OneToMany((type) => Request, (request) => request.event)
+  requests: Request[];
 }

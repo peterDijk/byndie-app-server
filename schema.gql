@@ -30,6 +30,13 @@ type EventType {
   events: [Event!]!
 }
 
+type Request {
+  id: String!
+  accepted: Boolean!
+  user: User!
+  event: Event!
+}
+
 type Event {
   id: String!
   name: String!
@@ -41,6 +48,7 @@ type Event {
   dateTo: DateTime!
   description: String
   details: String
+  requests: [Request!]!
 }
 
 """
@@ -53,6 +61,16 @@ type Location {
   country: String!
   city: String!
   LocationUsers: [UserDto!]!
+}
+
+type User {
+  id: String!
+  username: String!
+  email: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  UserLocation: Location!
 }
 
 type HealthCheck {
