@@ -26,11 +26,11 @@ export class Request extends BaseEntity {
   })
   accepted: boolean;
 
-  @Field((type) => User)
+  @Field((type) => User, { nullable: true })
   @ManyToOne((type) => User)
   user: User;
 
-  @Field((type) => Event)
+  @Field((type) => Event, { nullable: true })
   @ManyToOne((type) => Event, (event) => event.requests)
   event: Event;
 }

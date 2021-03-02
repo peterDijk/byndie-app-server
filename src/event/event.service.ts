@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/user.model';
 import { Repository } from 'typeorm';
@@ -89,6 +89,14 @@ export class EventService {
       { id },
       { relations: ['eventType', 'user', 'location', 'request'] },
     );
+  }
+
+  async findMyEvents(user: User): Promise<Event[]> {
+    const userEvents = await this.eventRepository.find({ where: { user } });
+    if (!userEvents) {
+      throw new HttpException('user has no events', HttpStatus.NOT_FOUND);
+    }
+    return await this.eventRepository.find({ where: { user } });
   }
 
   findAll(): Promise<Event[]> {

@@ -33,8 +33,8 @@ type EventType {
 type Request {
   id: String!
   accepted: Boolean!
-  user: User!
-  event: Event!
+  user: User
+  event: Event
 }
 
 type Event {
@@ -114,12 +114,16 @@ type Query {
   """Authorized - list all stored healthchecks"""
   allHealthChecks: [HealthCheck!]!
 
+  """Authorized - list events owned by logged in user"""
+  myEvents: [Event!]!
+
   """Authorized - list all stored events"""
   allEvents: [Event!]!
 
   """Authorized - find 1 event"""
   oneEvent(id: String!): Event!
   allRequests: [Request!]!
+  requestsForMyEvents: [Request!]!
 }
 
 type Mutation {

@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/user.model';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { EventType } from '../eventtype/eventtype.model';
 import { Location } from '../location/location.model';
 import { Event } from '../event/event.model';
@@ -24,7 +24,6 @@ export class RequestService {
 
   async create(eventId: string, user: User): Promise<Request> {
     /*
-      is not own event
 
 
     */
@@ -35,6 +34,7 @@ export class RequestService {
     if (!event) {
       throw new HttpException('cant find event', HttpStatus.BAD_REQUEST);
     }
+
     if (event.user.id === user.id) {
       throw new HttpException(
         'cant make request for your own event',
@@ -54,5 +54,18 @@ export class RequestService {
     return await this.requestRepository.find({
       relations: ['user', 'event', 'event.user'],
     });
+  }
+
+  async findUserEventsRequests(user: User): Promise<Request[]> {
+    const userEvents = await this.eventRepository.find({ where: { user } });
+    if (!userEvents) {
+      throw new HttpException('user has no events', HttpStatus.NOT_FOUND);
+    }
+    const userRequests = await this.requestRepository.find({
+      where: { event: In(userEvents.map((event) => event.id)) },
+      relations: ['event', 'user'],
+    });
+
+    return userRequests;
   }
 }

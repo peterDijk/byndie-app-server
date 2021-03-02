@@ -31,8 +31,13 @@ export class RequestResolver {
     return await this.requestService.findAll();
   }
 
+  @Query((returns) => [Request])
+  @UseGuards(GqlAuthGuard)
+  async requestsForMyEvents(@CurrentUser() user: User): Promise<Request[]> {
+    return await this.requestService.findUserEventsRequests(user);
+  }
   /*
-    get my requests
     get requests for my events
+    get my requests
   */
 }
