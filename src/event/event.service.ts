@@ -107,20 +107,55 @@ export class EventService {
     );
   }
 
-  async findMyEvents(user: User): Promise<Event[]> {
+  async findMyEvents(user: User, filter?: FilterInput): Promise<Event[]> {
     const userEvents = await this.eventRepository.find({ where: { user } });
     if (!userEvents) {
       throw new HttpException('user has no events', HttpStatus.NOT_FOUND);
     }
+
+    let ormFilter: FindManyOptions<Event>;
+    const { eventType, dateTo, dateFrom } = filter ?? {
+      eventType: null,
+      dateFrom: null,
+      dateTo: null,
+    };
+
+    if (eventType) {
+      const storedEventType = await this.eventTypeRepository.findOne({
+        where: { name: filter.eventType.name },
+      });
+      if (storedEventType) {
+        ormFilter = { eventType: storedEventType } as FindManyOptions<Event>;
+      }
+    }
+
+    if (dateFrom) {
+      ormFilter = {
+        ...ormFilter,
+        dateFrom: MoreThanOrEqual(filter.dateFrom),
+      } as FindManyOptions<Event>;
+    }
+
+    if (dateTo) {
+      ormFilter = {
+        ...ormFilter,
+        dateTo: LessThanOrEqual(filter.dateTo),
+      } as FindManyOptions<Event>;
+    }
+
     return await this.eventRepository.find({
-      where: { user },
+      where: { user, ...ormFilter },
       relations: ['user', 'eventType', 'location', 'requests', 'requests.user'],
     });
   }
 
   async findAll(filter?: FilterInput): Promise<Event[]> {
     let ormFilter: FindManyOptions<Event>;
-    const { eventType, dateTo, dateFrom } = filter;
+    const { eventType, dateTo, dateFrom } = filter ?? {
+      eventType: null,
+      dateFrom: null,
+      dateTo: null,
+    };
 
     if (eventType) {
       const storedEventType = await this.eventTypeRepository.findOne({

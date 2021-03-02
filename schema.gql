@@ -118,7 +118,7 @@ type Query {
   allHealthChecks: [HealthCheck!]!
 
   """Authorized - list events owned by logged in user"""
-  myEvents: [Event!]!
+  myEvents(filter: FilterInput): [Event!]!
 
   """Authorized - list all stored events"""
   allEvents(filter: FilterInput): [Event!]!

@@ -30,8 +30,11 @@ export class EventResolver {
     description: 'Authorized - list events owned by logged in user',
   })
   @UseGuards(GqlAuthGuard)
-  async myEvents(@CurrentUser() user: User): Promise<Event[]> {
-    return await this.eventService.findMyEvents(user);
+  async myEvents(
+    @CurrentUser() user: User,
+    @Args({ name: 'filter', nullable: true }) filter?: FilterInput,
+  ): Promise<Event[]> {
+    return await this.eventService.findMyEvents(user, filter);
   }
 
   @Query((returns) => [Event], {
