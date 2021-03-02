@@ -67,6 +67,10 @@ type LoginStatus {
   accessToken: String!
 }
 
+type IsLoggedIn {
+  status: Boolean!
+}
+
 type HealthCheckResponse {
   message: String!
 }
@@ -84,6 +88,8 @@ type City {
 }
 
 type Query {
+  isLoggedIn: IsLoggedIn!
+
   """Simple healthcheck to test response of the server"""
   healthcheck: HealthCheckResponse!
 

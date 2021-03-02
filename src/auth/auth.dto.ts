@@ -17,3 +17,9 @@ export class LoginStatus {
   @Field()
   accessToken: string;
 }
+
+@ObjectType()
+export class IsLoggedIn {
+  @Field()
+  status: boolean;
+}
