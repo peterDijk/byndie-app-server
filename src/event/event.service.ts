@@ -1,8 +1,16 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/user.model';
-import { Repository } from 'typeorm';
-import { EventInput } from './event.dto';
+import {
+  Between,
+  FindManyOptions,
+  LessThanOrEqual,
+  Like,
+  MoreThan,
+  MoreThanOrEqual,
+  Repository,
+} from 'typeorm';
+import { EventInput, FilterInput } from './event.dto';
 import { Event } from './event.model';
 import { EventType } from '../eventtype/eventtype.model';
 import { Location } from '../location/location.model';
@@ -99,20 +107,86 @@ export class EventService {
     );
   }
 
-  async findMyEvents(user: User): Promise<Event[]> {
+  async findMyEvents(user: User, filter?: FilterInput): Promise<Event[]> {
     const userEvents = await this.eventRepository.find({ where: { user } });
     if (!userEvents) {
       throw new HttpException('user has no events', HttpStatus.NOT_FOUND);
     }
+
+    let ormFilter: FindManyOptions<Event>;
+    const { eventType, dateTo, dateFrom } = filter ?? {
+      eventType: null,
+      dateFrom: null,
+      dateTo: null,
+    };
+
+    if (eventType) {
+      const storedEventType = await this.eventTypeRepository.findOne({
+        where: { name: filter.eventType.name },
+      });
+      if (storedEventType) {
+        ormFilter = { eventType: storedEventType } as FindManyOptions<Event>;
+      }
+    }
+
+    if (dateFrom) {
+      ormFilter = {
+        ...ormFilter,
+        dateFrom: MoreThanOrEqual(filter.dateFrom),
+      } as FindManyOptions<Event>;
+    }
+
+    if (dateTo) {
+      ormFilter = {
+        ...ormFilter,
+        dateTo: LessThanOrEqual(filter.dateTo),
+      } as FindManyOptions<Event>;
+    }
+
     return await this.eventRepository.find({
-      where: { user },
+      where: { user, ...ormFilter },
       relations: ['user', 'eventType', 'location', 'requests', 'requests.user'],
     });
   }
 
-  findAll(): Promise<Event[]> {
+  async findAll(filter?: FilterInput): Promise<Event[]> {
+    let ormFilter: FindManyOptions<Event>;
+    const { eventType, dateTo, dateFrom } = filter ?? {
+      eventType: null,
+      dateFrom: null,
+      dateTo: null,
+    };
+
+    if (eventType) {
+      const storedEventType = await this.eventTypeRepository.findOne({
+        where: { name: filter.eventType.name },
+      });
+      if (storedEventType) {
+        ormFilter = { eventType: storedEventType } as FindManyOptions<Event>;
+      }
+    }
+
+    if (dateFrom) {
+      ormFilter = {
+        ...ormFilter,
+        dateFrom: MoreThanOrEqual(filter.dateFrom),
+      } as FindManyOptions<Event>;
+    }
+
+    if (dateTo) {
+      ormFilter = {
+        ...ormFilter,
+        dateTo: LessThanOrEqual(filter.dateTo),
+      } as FindManyOptions<Event>;
+    }
+
     return this.eventRepository.find({
+      where: { ...ormFilter },
       relations: ['user', 'eventType', 'location', 'requests', 'requests.user'],
     });
+  }
+
+  findAllEventTypes(): Promise<EventType[]> {
+    return this.eventTypeRepository.find();
   }
 }

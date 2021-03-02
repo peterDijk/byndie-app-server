@@ -118,15 +118,28 @@ type Query {
   allHealthChecks: [HealthCheck!]!
 
   """Authorized - list events owned by logged in user"""
-  myEvents: [Event!]!
+  myEvents(filter: FilterInput): [Event!]!
 
   """Authorized - list all stored events"""
-  allEvents: [Event!]!
+  allEvents(filter: FilterInput): [Event!]!
+
+  """Authorized - list all event types"""
+  allEventTypes: [EventType!]!
 
   """Authorized - find 1 event"""
   oneEvent(id: String!): Event!
   allRequests: [Request!]!
   requestsForMyEvents: [Request!]!
+}
+
+input FilterInput {
+  eventType: EventTypeInput
+  dateFrom: DateTime
+  dateTo: DateTime
+}
+
+input EventTypeInput {
+  name: String!
 }
 
 type Mutation {
@@ -174,10 +187,6 @@ input EventInput {
   dateTo: DateTime!
   description: String!
   details: String!
-}
-
-input EventTypeInput {
-  name: String!
 }
 
 input RequestInput {
