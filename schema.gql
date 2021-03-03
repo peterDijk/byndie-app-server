@@ -36,7 +36,7 @@ type Request {
   accepted: Boolean!
   declined: Boolean!
   message: String!
-  user: User
+  user: UserOutput
   event: Event
 }
 
@@ -64,16 +64,6 @@ type Location {
   country: String!
   city: String!
   LocationUsers: [UserDto!]!
-}
-
-type User {
-  id: String!
-  username: String!
-  email: String!
-  password: String!
-  firstName: String!
-  lastName: String!
-  UserLocation: Location!
 }
 
 type HealthCheck {

@@ -27,7 +27,10 @@ export class UserDto {
 }
 
 @ObjectType()
-export class UserOutput extends UserDto {}
+export class UserOutput extends UserDto {
+  @Field({ nullable: true })
+  username: string;
+}
 
 @InputType()
 export class CreateUserDto {

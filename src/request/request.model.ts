@@ -10,6 +10,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Event } from '../event/event.model';
+import { UserOutput } from '../users/user.dto';
 
 @ObjectType()
 @Entity()
@@ -42,7 +43,7 @@ export class Request extends BaseEntity {
   })
   message: string;
 
-  @Field((type) => User, { nullable: true })
+  @Field((type) => UserOutput, { nullable: true })
   @ManyToOne((type) => User)
   user: User;
 
