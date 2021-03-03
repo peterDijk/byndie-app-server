@@ -96,6 +96,21 @@ type HealthCheckResponse {
   message: String!
 }
 
+type EventOutput {
+  id: String!
+  name: String!
+  eventType: EventType
+  location: LocationOutput
+  user: UserOutput
+  maxPeople: Float!
+  dateFrom: DateTime!
+  dateTo: DateTime!
+  description: String
+  details: String
+  requests: [Request!]!
+  isRequestEnabled: Boolean!
+}
+
 type Country {
   id: String!
   name: String!
@@ -130,7 +145,7 @@ type Query {
   allLocations: [Location!]!
 
   """Authorized - find 1 event"""
-  oneEvent(id: String!): Event!
+  oneEvent(id: String!): EventOutput!
   allRequests: [Request!]!
   requestsForMyEvents: [Request!]!
 }
