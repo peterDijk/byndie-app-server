@@ -26,9 +26,8 @@ export class EventService {
     @InjectRepository(EventType)
     private eventTypeRepository: Repository<EventType>,
     @InjectRepository(Location)
-    private locationRepository: Repository<Location>, // @InjectRepository(Request)
-  ) // private
-  {}
+    private locationRepository: Repository<Location>,
+  ) {}
 
   private readonly logger = new Logger(EventService.name);
 
