@@ -80,6 +80,13 @@ export class EventService {
       }
     }
 
+    if (!name || !eventType) {
+      throw new HttpException(
+        'have to give event a name and type',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const event: Event = await this.eventRepository.create({
       name: name,
       user,
