@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/user.model';
 import {
@@ -7,7 +13,7 @@ import {
   MoreThanOrEqual,
   Repository,
 } from 'typeorm';
-import { EventInput, FilterInput } from './event.dto';
+import { EventInput, EventOutput, FilterInput } from './event.dto';
 import { Event } from './event.model';
 import { EventType } from '../eventtype/eventtype.model';
 import { Location } from '../location/location.model';
@@ -20,8 +26,9 @@ export class EventService {
     @InjectRepository(EventType)
     private eventTypeRepository: Repository<EventType>,
     @InjectRepository(Location)
-    private locationRepository: Repository<Location>,
-  ) {}
+    private locationRepository: Repository<Location>, // @InjectRepository(Request)
+  ) // private
+  {}
 
   private readonly logger = new Logger(EventService.name);
 
@@ -89,8 +96,8 @@ export class EventService {
     return await this.eventRepository.save(event);
   }
 
-  findOne(id: string): Promise<Event> {
-    return this.eventRepository.findOne(
+  async findOne(id: string): Promise<EventOutput> {
+    const event = await this.eventRepository.findOne(
       { id },
       {
         relations: [
@@ -102,6 +109,16 @@ export class EventService {
         ],
       },
     );
+
+    const requestsAccepted = event.requests.filter(
+      (request) => request.accepted,
+    );
+
+    const isRequestEnabled = requestsAccepted.length < event.maxPeople;
+
+    const enrichedEvent = { ...event, isRequestEnabled } as EventOutput;
+
+    return enrichedEvent;
   }
 
   async findMyEvents(user: User, filter?: FilterInput): Promise<Event[]> {

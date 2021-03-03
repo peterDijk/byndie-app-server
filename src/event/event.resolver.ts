@@ -1,7 +1,7 @@
 import { Inject, Logger, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Event } from './event.model';
-import { EventInput, FilterInput } from './event.dto';
+import { EventInput, EventOutput, FilterInput } from './event.dto';
 import { EventService } from './event.service';
 import { CurrentUser, GqlAuthGuard } from '../auth/graphql.guard';
 import { User } from '../users/user.model';
@@ -64,7 +64,7 @@ export class EventResolver {
     return await this.eventService.findAllLocations();
   }
 
-  @Query((returns) => Event, { description: 'Authorized - find 1 event' })
+  @Query((returns) => EventOutput, { description: 'Authorized - find 1 event' })
   @UseGuards(GqlAuthGuard)
   async oneEvent(@Args('id') id: string) {
     return await this.eventService.findOne(id);
